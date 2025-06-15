@@ -1,7 +1,7 @@
 services:
     app:
         build:
-            context: ./backend
+            context: ./laravel_vue_ecommerce
             dockerfile: Dockerfile
         restart: unless-stopped
         ports:
@@ -9,20 +9,20 @@ services:
         depends_on:
             - db
         env_file:
-            - ./backend/.env
+            - ./laravel_vue_ecommerce/.env
         volumes:
             - storage:/usr/share/nginx/html/storage:rw
             - public:/usr/share/nginx/html/public:rw
     queue-worker:
         build:
-            context: ./backend
+            context: ./laravel_vue_ecommerce
             dockerfile: Dockerfile
         restart: unless-stopped
         command: php artisan queue:work
         environment:
             IS_WORKER: "true"
         env_file:
-            - ./backend/.env
+            - ./laravel_vue_ecommerce/.env
         depends_on:
             - db
             - redis
