@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axiosClient from '../axios';
 
 export function getCurrentUser({commit}, data) {
   return axiosClient.get('/user', data)
@@ -9,7 +9,7 @@ export function getCurrentUser({commit}, data) {
 }
 
 export function login({commit}, data) {
-  return axios.post('/api/login', data)
+  return axiosClient.post('/login', data)
     .then(({data}) => {
       commit('setUser', data.user);
       commit('setToken', data.token)
@@ -18,7 +18,7 @@ export function login({commit}, data) {
 }
 
 export function logout({commit}) {
-  return axiosClient.post('/api/logout')
+  return axiosClient.post('/logout')
     .then((response) => {
       commit('setToken', null)
 
