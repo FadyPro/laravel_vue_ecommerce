@@ -13,7 +13,7 @@
 
 <script setup>
   const {title} = defineProps({
-    title: String
+      title: String
   })
 </script>
 
