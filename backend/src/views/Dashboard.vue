@@ -1,11 +1,11 @@
-<script setup>
-
-</script>
-
 <template>
 <h1>dashboard</h1>
-</template>
 
+</template>
+<script setup>
+
+
+</script>
 <style scoped>
 
 </style>

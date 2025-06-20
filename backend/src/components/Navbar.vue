@@ -4,77 +4,76 @@
             class="flex items-center justify-center rounded transition-colors w-8 h-8 text-gray-700 hover:bg-black/10">
       <Bars3Icon class="w-6"/>
     </button>
-    <Menu as="div" class="relative inline-block text-left">
-      <MenuButton class="flex items-center">
-        <img src="https://randomuser.me/api/portraits/men/1.jpg" class="rounded-full w-8 mr-2">
 
-        <ChevronDownIcon
-          class="h-5 w-5 text-violet-200 hover:text-violet-100"
-          aria-hidden="true"
-        />
-      </MenuButton>
 
-      <transition
-        enter-active-class="transition duration-100 ease-out"
-        enter-from-class="transform scale-95 opacity-0"
-        enter-to-class="transform scale-100 opacity-100"
-        leave-active-class="transition duration-75 ease-in"
-        leave-from-class="transform scale-100 opacity-100"
-        leave-to-class="transform scale-95 opacity-0"
-      >
-        <Bars3Icon
-            class="absolute right-0 mt-2 w-36 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
-        >
-          <div class="px-1 py-1">
-            <Bars3Icon  v-slot="{ active }">
-              <button
-                :class="[
-                  active ? 'bg-indigo-600 text-white' : 'text-gray-900',
-                  'group flex w-full items-center rounded-md px-2 py-2 text-sm',
-                ]"
-              >
-                <UserIcon
-                  :active="active"
-                  class="mr-2 h-5 w-5 text-indigo-400"
-                  aria-hidden="true"
-                />
-                Profile
-              </button>
-            </Bars3Icon >
-            <Bars3Icon  v-slot="{ active }">
-              <button
-                @click="logout"
-                :class="[
-                  active ? 'bg-indigo-600 text-white' : 'text-gray-900',
-                  'group flex w-full items-center rounded-md px-2 py-2 text-sm',
-                ]"
-              >
-                <ArrowLongLeftIcon
-                  :active="active"
-                  class="mr-2 h-5 w-5 text-indigo-400"
-                  aria-hidden="true"
-                />
-                Logout
-              </button>
-            </Bars3Icon >
-          </div>
-        </Bars3Icon >
-      </transition>
-    </Menu>
+      <Popover class="relative inline-block text-left">
+          <PopoverButton class="inline-flex items-center gap-x-1 text-sm/6 font-semibold text-gray-900">
+              <img src="https://randomuser.me/api/portraits/men/1.jpg" class="rounded-full w-8 mr-2">
+              <ChevronDownIcon class="size-5" aria-hidden="true" />
+          </PopoverButton>
+
+          <transition enter-active-class="transition ease-out duration-200" enter-from-class="opacity-0 translate-y-1" enter-to-class="opacity-100 translate-y-0" leave-active-class="transition ease-in duration-150" leave-from-class="opacity-100 translate-y-0" leave-to-class="opacity-0 translate-y-1">
+              <PopoverPanel class="absolute left-1/2 z-10 mt-5 flex max-w-max -translate-x-10/12 transform space-y-6 px-4 w-80">
+                  <div class="w-screen max-w-md flex-auto overflow-hidden rounded-3xl bg-white text-sm/6 shadow-lg ring-1 ring-gray-900/5">
+                      <div class="p-4">
+                          <!-- Item 1 -->
+                          <div class="group relative flex items-center gap-x-6 rounded-lg p-4 hover:bg-gray-50">
+                              <div class="mt-1 flex size-11 flex-none items-center justify-center rounded-lg bg-gray-50 group-hover:bg-white">
+                                  <UserCircleIcon class="size-6 text-gray-600 group-hover:text-indigo-600" aria-hidden="true" />
+                              </div>
+                              <div>
+                                  <a href="/dashboard" class="font-semibold text-gray-900">
+                                      Profile
+                                      <span class="absolute inset-0" />
+                                  </a>
+                              </div>
+                          </div>
+
+                          <!-- Item 2 -->
+                          <div class="group relative flex items-center gap-x-6 rounded-lg p-4 hover:bg-gray-50">
+                              <div class="mt-1 flex size-11 flex-none items-center justify-center rounded-lg bg-gray-50 group-hover:bg-white">
+                                  <ArrowLeftStartOnRectangleIcon class="size-6 text-gray-600 group-hover:text-indigo-600" aria-hidden="true" />
+                              </div>
+                              <div>
+                                  <a href="/profile" class="font-semibold text-gray-900">
+                                      Logout
+                                      <span class="absolute inset-0" />
+                                  </a>
+                              </div>
+                          </div>
+
+
+                      </div>
+                  </div>
+              </PopoverPanel>
+          </transition>
+      </Popover>
+
   </header>
 </template>
 
 <script setup>
-import {ArrowLongLeftIcon, Bars3Icon  , UserIcon} from '@heroicons/vue/24/solid'
-import {Menu, MenuButton, MenuItems, MenuItem} from '@headlessui/vue'
+import {ArrowLongLeftIcon, Bars3Icon  , UserCircleIcon,ArrowLeftStartOnRectangleIcon} from '@heroicons/vue/24/solid'
+import { Popover, PopoverButton, PopoverPanel } from '@headlessui/vue'
 import {ChevronDownIcon} from '@heroicons/vue/24/solid'
+import {ArrowPathIcon, ChartPieIcon, CursorArrowRaysIcon, FingerPrintIcon, SquaresPlusIcon} from '@heroicons/vue/24/solid'
+
 import store from "../store";
 import router from "../router";
 import {computed} from "vue";
 
 const emit = defineEmits(['toggle-sidebar'])
 
-
+const solutions = [
+    { name: 'Profile', href: '#', icon: CursorArrowRaysIcon },
+    { name: 'Logout', href: '#', icon: ChartPieIcon },
+]
+function logout() {
+    store.dispatch('logout')
+        .then(() => {
+            router.push({name: 'login'})
+        })
+}
 </script>
 
 <style scoped>

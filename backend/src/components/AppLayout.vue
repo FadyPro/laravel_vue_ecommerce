@@ -1,10 +1,10 @@
 <template>
   <div  class="min-h-full bg-gray-200 flex">
     <!--    Sidebar-->
-    <Sidebar :class="{'-ml-[200px]': !sidebarOpened}"/>
+    <Sidebar :class="{'-ml-[180px]': !sidebarOpened}"/>
     <!--/    Sidebar-->
 
-    <div class="flex-1">
+    <div class="flex-1 flex-col w-full transition-all">
       <Navbar @toggle-sidebar="toggleSidebar"></Navbar>
       <!--      Content-->
       <main class="p-6">
