@@ -84,7 +84,7 @@
                         ></path>
                     </svg>
                     <span class="absolute left-0 inset-y-0 flex items-center pl-3">
-<!--              <LockClosedIcon size="24" class="h-5 w-5 text-indigo-500 group-hover:text-indigo-400" aria-hidden="true"/>-->
+              <LockClosedIcon size="24" class="h-5 w-5 text-indigo-500 group-hover:text-indigo-400" aria-hidden="true"/>
             </span>
                     Sign in
                 </button>
@@ -95,7 +95,7 @@
 
 <script setup>
 import {ref} from 'vue'
-import {LockClosedIcon} from '@vue-hero-icons/solid'
+import { LockClosedIcon } from '@heroicons/vue/24/solid'
 import GuestLayout from "../components/GuestLayout.vue";
 import store from "../store";
 import router from "../router";
