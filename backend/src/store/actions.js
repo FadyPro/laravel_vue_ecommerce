@@ -1,4 +1,4 @@
-import axiosClient from 'axios';
+import axios from 'axios';
 
 export function getCurrentUser({commit}, data) {
   return axiosClient.get('/user', data)
@@ -9,7 +9,7 @@ export function getCurrentUser({commit}, data) {
 }
 
 export function login({commit}, data) {
-  return axiosClient.post('/api/login', data)
+  return axios.post('/api/login', data)
     .then(({data}) => {
       commit('setUser', data.user);
       commit('setToken', data.token)
