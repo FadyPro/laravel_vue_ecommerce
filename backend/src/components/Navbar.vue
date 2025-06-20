@@ -35,7 +35,7 @@
                                   <ArrowLeftStartOnRectangleIcon class="size-6 text-gray-600 group-hover:text-indigo-600" aria-hidden="true" />
                               </div>
                               <div>
-                                  <a href="/profile" class="font-semibold text-gray-900">
+                                  <a href="#" @click="logout" class="font-semibold text-gray-900">
                                       Logout
                                       <span class="absolute inset-0" />
                                   </a>

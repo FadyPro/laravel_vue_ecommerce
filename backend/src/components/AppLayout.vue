@@ -8,7 +8,11 @@
       <Navbar @toggle-sidebar="toggleSidebar"></Navbar>
       <!--      Content-->
       <main class="p-6">
-        <router-view></router-view>
+          <div class="p-4 bg-white rounded-lg shadow-md mb-6">
+              <router-view></router-view>
+
+          </div>
+
       </main>
       <!--      Content-->
     </div>
