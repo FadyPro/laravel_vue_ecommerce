@@ -26,6 +26,7 @@ import {ref, computed, onMounted, onUnmounted} from 'vue'
 import Sidebar from "./Sidebar.vue";
 import Navbar from "./Navbar.vue";
 import store from "../store";
+import Spinner from "./core/Spinner.vue";
 
 
 const {title} = defineProps({
@@ -42,8 +43,15 @@ function updateSidebarState() {
   sidebarOpened.value = window.outerWidth > 768;
 }
 
+onMounted(() => {
+    store.dispatch('getCurrentUser')
+    store.dispatch('getCountries')
+    updateSidebarState();
+    window.addEventListener('resize', updateSidebarState)
+})
+
 onUnmounted(() => {
-  window.removeEventListener('resize', updateSidebarState)
+    window.removeEventListener('resize', updateSidebarState)
 })
 
 </script>

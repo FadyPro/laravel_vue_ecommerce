@@ -17,12 +17,12 @@
                   <div class="w-screen max-w-md flex-auto overflow-hidden rounded-3xl bg-white text-sm/6 shadow-lg ring-1 ring-gray-900/5">
                       <div class="p-4">
                           <!-- Item 1 -->
-                          <div class="group relative flex items-center gap-x-6 rounded-lg p-4 hover:bg-gray-50">
+                          <div class="group relative flex items-center gap-x-6 rounded-lg p-2 hover:bg-indigo-600">
                               <div class="mt-1 flex size-11 flex-none items-center justify-center rounded-lg bg-gray-50 group-hover:bg-white">
                                   <UserCircleIcon class="size-6 text-gray-600 group-hover:text-indigo-600" aria-hidden="true" />
                               </div>
                               <div>
-                                  <a href="/dashboard" class="font-semibold text-gray-900">
+                                  <a href="/dashboard" class="font-semibold text-gray-900 group-hover:text-white">
                                       Profile
                                       <span class="absolute inset-0" />
                                   </a>
@@ -30,12 +30,12 @@
                           </div>
 
                           <!-- Item 2 -->
-                          <div class="group relative flex items-center gap-x-6 rounded-lg p-4 hover:bg-gray-50">
-                              <div class="mt-1 flex size-11 flex-none items-center justify-center rounded-lg bg-gray-50 group-hover:bg-white">
+                          <div class="group relative flex items-center gap-x-6 rounded-lg p-2 hover:bg-indigo-600">
+                              <div class="mt-1 flex size-11 flex-none items-center justify-center rounded-lg bg-gray-50 group-hover:text-indigo-600">
                                   <ArrowLeftStartOnRectangleIcon class="size-6 text-gray-600 group-hover:text-indigo-600" aria-hidden="true" />
                               </div>
                               <div>
-                                  <a href="#" @click="logout" class="font-semibold text-gray-900">
+                                  <a href="#" @click="logout" class="font-semibold text-gray-900 group-hover:text-white">
                                       Logout
                                       <span class="absolute inset-0" />
                                   </a>
@@ -64,10 +64,6 @@ import {computed} from "vue";
 
 const emit = defineEmits(['toggle-sidebar'])
 
-const solutions = [
-    { name: 'Profile', href: '#', icon: CursorArrowRaysIcon },
-    { name: 'Logout', href: '#', icon: ChartPieIcon },
-]
 function logout() {
     store.dispatch('logout')
         .then(() => {

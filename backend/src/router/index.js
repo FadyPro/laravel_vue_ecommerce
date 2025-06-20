@@ -5,6 +5,8 @@ import RequestPassword from "../views/RequestPassword.vue";
 import ResetPassword from "../views/ResetPassword.vue";
 import NotFound from "../views/NotFound.vue";
 import AppLayout from "../components/AppLayout.vue";
+import Products from "../views/Products/Products.vue";
+import store from "../store/index.js";
 
 const routes =[
     {
@@ -12,18 +14,29 @@ const routes =[
         name: 'app',
         redirect: '/app/dashboard',
         component: AppLayout,
+        meta: {
+            requiresAuth: true
+        },
         children: [
             {
                 path: 'dashboard',
                 name: 'app.dashboard',
                 component: Dashboard
             },
+            {
+                path: 'products',
+                name: 'app.products',
+                component: Products
+            },
         ]
     },
     {
         path: '/login',
         name: 'login',
-        component: Login
+        component: Login,
+        meta: {
+            requiresGuest: true
+        }
     },
     {
         path: '/request-password',
@@ -52,6 +65,18 @@ const routes =[
 const router = createRouter({
     history: createWebHistory(),
     routes
+})
+
+// Navigation guard to check for authentication
+router.beforeEach((to, from, next) => {
+    if (to.meta.requiresAuth && !store.state.user.token) {
+        next({name: 'login'})
+    } else if (to.meta.requiresGuest && store.state.user.token) {
+        next({name: 'app.dashboard'})
+    } else {
+        next();
+    }
+
 })
 
 export default router;
