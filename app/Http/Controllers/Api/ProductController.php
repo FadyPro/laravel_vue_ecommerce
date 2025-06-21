@@ -117,7 +117,13 @@ class ProductController extends Controller
 
     private function saveCategories($categoryIds, Product $product)
     {
-        ProductCategory::where('product_id', $product->id)->delete();
+        if (empty($categoryIds)) {
+            // If no categories are provided, delete all existing categories for the product
+            ProductCategory::where('product_id', $product->id)->delete();
+            return;
+        }
+
+//        ProductCategory::where('product_id', $product->id)->delete();
         $data = array_map(fn($id) => (['category_id' => $id, 'product_id' => $product->id]), $categoryIds);
 
         ProductCategory::insert($data);

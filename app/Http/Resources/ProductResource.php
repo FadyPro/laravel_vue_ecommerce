@@ -16,7 +16,7 @@ class ProductResource extends JsonResource
      * @param  \Illuminate\Http\Request  $request
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
-    public function toArray($request): array|\JsonSerializable|\Illuminate\Contracts\Support\Arrayable
+    public function toArray($request)
     {
         return [
             'id' => $this->id,
