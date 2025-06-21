@@ -16,7 +16,7 @@
           <CustomInput type="number" class="mb-2" v-model="product.price" label="Price" prepend="$" :errors="errors['price']"/>
           <CustomInput type="number" class="mb-2" v-model="product.quantity" label="Quantity" :errors="errors['quantity']"/>
           <CustomInput type="checkbox" class="mb-2" v-model="product.published" label="Published" :errors="errors['published']"/>
-          <treeselect v-model="product.categories" :multiple="true" :options="options" :errors="errors['categories']"/>
+          <Treeselect v-model="product.categories" :multiple="true" :options="options" :errors="errors['categories']"/>
         </div>
         <div class="col-span-1 px-4 pt-5 pb-4">
           <image-preview v-model="product.images"
@@ -49,11 +49,11 @@
 
 <script setup>
 import {onMounted, ref} from 'vue'
-import CustomInput from "../../components/core/CustomInput.vue";
+// import CustomInput from "../../components/core/CustomInput.vue";
 import store from "../../store/index.js";
 import Spinner from "../../components/core/Spinner.vue";
 import {useRoute, useRouter} from "vue-router";
-import ImagePreview from "../../components/ImagePreview.vue";
+// import ImagePreview from "../../components/ImagePreview.vue";
 // import the component
 import Treeselect from 'vue3-treeselect'
 // import the styles

@@ -7,6 +7,7 @@ import NotFound from "../views/NotFound.vue";
 import AppLayout from "../components/AppLayout.vue";
 import Products from "../views/Products/Products.vue";
 import store from "../store/index.js";
+import ProductForm from "../views/Products/ProductForm.vue";
 
 const routes =[
     {
@@ -28,6 +29,19 @@ const routes =[
                 name: 'app.products',
                 component: Products
             },
+            {
+                path: 'products/create',
+                name: 'app.products.create',
+                component: ProductForm
+            },
+            {
+                path: 'products/:id',
+                name: 'app.products.edit',
+                component: ProductForm,
+                props: {
+                    id: (value) => /^\d+$/.test(value)
+                }
+            }
         ]
     },
     {
