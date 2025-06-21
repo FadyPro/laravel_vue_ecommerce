@@ -50,6 +50,9 @@ class OrderController extends Controller
         return OrderStatus::getStatuses();
     }
 
+    /**
+     * @throws \Throwable
+     */
     public function changeStatus(Order $order, $status)
     {
         DB::beginTransaction();

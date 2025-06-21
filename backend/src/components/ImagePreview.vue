@@ -41,7 +41,7 @@
 <script setup>
 // Imports
 import {Sortable} from "sortablejs-vue3";
-// import {v4 as uuidv4} from 'uuid';
+import {v4 as uuidv4} from 'uuid';
 import {onMounted, ref, watch} from "vue";
 
 // Uses

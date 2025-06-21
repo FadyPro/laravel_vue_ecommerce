@@ -41,8 +41,7 @@ class ProductController extends Controller
      * Store a newly created resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @return ProductResource
-     * @throws \Exception
+     * @return \Illuminate\Http\Response
      */
     public function store(ProductRequest $request)
     {
@@ -67,7 +66,7 @@ class ProductController extends Controller
      * Display the specified resource.
      *
      * @param \App\Models\Product $product
-     * @return ProductResource
+     * @return \Illuminate\Http\Response
      */
     public function show(Product $product)
     {
@@ -79,7 +78,7 @@ class ProductController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      * @param \App\Models\Product      $product
-     * @return ProductResource
+     * @return \Illuminate\Http\Response
      */
     public function update(ProductRequest $request, Product $product)
     {
@@ -141,15 +140,16 @@ class ProductController extends Controller
         }
 
         foreach ($images as $id => $image) {
-            $path = 'images/' . Str::random();
-            if (!Storage::exists($path)) {
-                Storage::makeDirectory($path, 0755, true);
-            }
-            $name = Str::random().'.'.$image->getClientOriginalExtension();
-            if (!Storage::putFileAS('public/' . $path, $image, $name)) {
+            $directory = 'images';
+//            $path = 'images/' . Str::random();
+//            if (!Storage::disk('public')->exists($directory)) {
+//                Storage::disk('public')->makeDirectory($directory, 0755, true);
+//            }
+            $name = Str::random(40).'.'.$image->getClientOriginalExtension();
+            if (!Storage::disk('public')->putFileAS($directory, $image, $name)) {
                 throw new \Exception("Unable to save file \"{$image->getClientOriginalName()}\"");
             }
-            $relativePath = $path . '/' . $name;
+            $relativePath = $directory . '/' . $name;
 
             ProductImage::create([
                 'product_id' => $product->id,
