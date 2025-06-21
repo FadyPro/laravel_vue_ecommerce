@@ -8,7 +8,8 @@
 
       <Popover class="relative inline-block text-left">
           <PopoverButton class="inline-flex items-center gap-x-1 text-sm/6 font-semibold text-gray-900">
-              <img src="https://randomuser.me/api/portraits/men/1.jpg" class="rounded-full w-8 mr-2">
+              <img src="https://randomuser.me/api/portraits/men/1.jpg" class="rounded-full w-8 mr-2"  alt=""/>
+              <small>{{currentUser.name}}</small>
               <ChevronDownIcon class="size-5" aria-hidden="true" />
           </PopoverButton>
 
@@ -53,7 +54,7 @@
 </template>
 
 <script setup>
-import {ArrowLongLeftIcon, Bars3Icon  , UserCircleIcon,ArrowLeftStartOnRectangleIcon} from '@heroicons/vue/24/solid'
+import {Bars3Icon  , UserCircleIcon,ArrowLeftStartOnRectangleIcon} from '@heroicons/vue/24/solid'
 import { Popover, PopoverButton, PopoverPanel } from '@headlessui/vue'
 import {ChevronDownIcon} from '@heroicons/vue/24/solid'
 import {ArrowPathIcon, ChartPieIcon, CursorArrowRaysIcon, FingerPrintIcon, SquaresPlusIcon} from '@heroicons/vue/24/solid'
@@ -63,7 +64,7 @@ import router from "../router";
 import {computed} from "vue";
 
 const emit = defineEmits(['toggle-sidebar'])
-
+const currentUser = computed(() => store.state.user.data);
 function logout() {
     store.dispatch('logout')
         .then(() => {
