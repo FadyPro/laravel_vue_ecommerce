@@ -3,7 +3,7 @@
     <div class="flex justify-between border-b-2 pb-3">
       <div class="flex items-center">
         <span class="whitespace-nowrap mr-3">Per Page</span>
-        <select @change="getProducts(null)" v-model="perPage"
+        <select @change="getCustomers(null)" v-model="perPage"
                 class="appearance-none relative block w-24 px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm">
           <option value="5">5</option>
           <option value="10">10</option>
@@ -11,73 +11,74 @@
           <option value="50">50</option>
           <option value="100">100</option>
         </select>
-        <span class="ml-3">Found {{ products.total }} products</span>
+        <span class="ml-3">Found {{customers.total}} customers</span>
       </div>
       <div>
-        <input v-model="search" @change="getProducts(null)"
+        <input v-model="search" @change="getCustomers(null)"
                class="appearance-none relative block w-48 px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-               placeholder="Type to Search products">
+               placeholder="Type to Search customers">
       </div>
     </div>
 
     <table class="table-auto w-full">
       <thead>
       <tr>
-        <TableHeaderCell field="id" :sort-field="sortField" :sort-direction="sortDirection" @click="sortProducts('id')">
+        <TableHeaderCell field="id" :sort-field="sortField" :sort-direction="sortDirection"
+                         @click="sortCustomers('id')">
           ID
         </TableHeaderCell>
-        <TableHeaderCell field="image" :sort-field="sortField" :sort-direction="sortDirection">
-          Image
+        <TableHeaderCell field="name" :sort-field="sortField" :sort-direction="sortDirection"
+                         @click="sortCustomers('name')">
+          Name
         </TableHeaderCell>
-        <TableHeaderCell field="title" :sort-field="sortField" :sort-direction="sortDirection"
-                         @click="sortProducts('title')">
-          Title
+        <TableHeaderCell field="email" :sort-field="sortField" :sort-direction="sortDirection"
+                         @click="sortCustomers('email')">
+          Email
         </TableHeaderCell>
-        <TableHeaderCell field="price" :sort-field="sortField" :sort-direction="sortDirection"
-                         @click="sortProducts('price')">
-          Price
+        <TableHeaderCell field="phone" :sort-field="sortField" :sort-direction="sortDirection"
+                         @click="sortCustomers('phone')">
+          Phone
         </TableHeaderCell>
-        <TableHeaderCell field="quantity" :sort-field="sortField" :sort-direction="sortDirection"
-                         @click="sortProducts('quantity')">
-          Quantity
+        <TableHeaderCell field="status" :sort-field="sortField" :sort-direction="sortDirection"
+                         @click="sortCustomers('status')">
+          Status
         </TableHeaderCell>
-        <TableHeaderCell field="updated_at" :sort-field="sortField" :sort-direction="sortDirection"
-                         @click="sortProducts('updated_at')">
-          Last Updated At
+        <TableHeaderCell field="created_at" :sort-field="sortField" :sort-direction="sortDirection"
+                         @click="sortCustomers('created_at')">
+          Register Date
         </TableHeaderCell>
         <TableHeaderCell field="actions">
           Actions
         </TableHeaderCell>
       </tr>
       </thead>
-      <tbody v-if="products.loading || !products.data.length">
+      <tbody v-if="customers.loading || !customers.data.length">
       <tr>
-        <td colspan="6">
-          <Spinner v-if="products.loading"/>
+        <td colspan="7">
+          <Spinner v-if="customers.loading"/>
           <p v-else class="text-center py-8 text-gray-700">
-            There are no products
+            There are no customers
           </p>
         </td>
       </tr>
       </tbody>
       <tbody v-else>
-      <tr v-for="(product, index) of products.data">
-        <td class="border-b p-2 ">{{ product.id }}</td>
+      <tr v-for="(customer, index) of customers.data">
+        <td class="border-b p-2 ">{{ customer.id }}</td>
         <td class="border-b p-2 ">
-          <img v-if="product.image_url" class="w-16 h-16 object-cover" :src="product.image_url" :alt="product.title">
-          <img v-else class="w-16 h-16 object-cover" src="../../assets/noimage.png">
+         {{ customer.first_name }} {{ customer.last_name }}
         </td>
         <td class="border-b p-2 max-w-[200px] whitespace-nowrap overflow-hidden text-ellipsis">
-          {{ product.title }}
+          {{ customer.email }}
         </td>
         <td class="border-b p-2">
-          {{ $filters.currencyUSD(product.price) }}
+          {{ customer.phone }}
         </td>
         <td class="border-b p-2">
-          {{ product.quantity }}
+          {{ customer.status }}
         </td>
-        <td class="border-b p-2 ">
-          {{ product.updated_at }}
+        <td class="border-b p-2">
+          {{ customer.created_at }}
         </td>
         <td class="border-b p-2 ">
           <Menu as="div" class="relative inline-block text-left">
@@ -105,7 +106,7 @@
                 <div class="px-1 py-1">
                   <MenuItem v-slot="{ active }">
                     <router-link
-                      :to="{name: 'app.products.edit', params: {id: product.id}}"
+                      :to="{name: 'app.customers.view', params: {id: customer.id}}"
                       :class="[
                         active ? 'bg-indigo-600 text-white' : 'text-gray-900',
                         'group flex w-full items-center rounded-md px-2 py-2 text-sm',
@@ -125,7 +126,7 @@
                         active ? 'bg-indigo-600 text-white' : 'text-gray-900',
                         'group flex w-full items-center rounded-md px-2 py-2 text-sm',
                       ]"
-                      @click="deleteProduct(product)"
+                      @click="deleteCustomer(customer)"
                     >
                       <TrashIcon
                         :active="active"
@@ -144,18 +145,18 @@
       </tbody>
     </table>
 
-    <div v-if="!products.loading" class="flex justify-between items-center mt-5">
-      <div v-if="products.data.length">
-        Showing from {{ products.from }} to {{ products.to }}
+    <div v-if="!customers.loading" class="flex justify-between items-center mt-5">
+      <div v-if="customers.data.length">
+        Showing from {{ customers.from }} to {{ customers.to }}
       </div>
       <nav
-        v-if="products.total > products.limit"
+        v-if="customers.total > customers.limit"
         class="relative z-0 inline-flex justify-center rounded-md shadow-sm -space-x-px"
         aria-label="Pagination"
       >
         <!-- Current: "z-10 bg-indigo-50 border-indigo-500 text-indigo-600", Default: "bg-white border-gray-300 text-gray-500 hover:bg-gray-50" -->
         <a
-          v-for="(link, i) of products.links"
+          v-for="(link, i) of customers.links"
           :key="i"
           :disabled="!link.url"
           href="#"
@@ -167,7 +168,7 @@
                 ? 'z-10 bg-indigo-50 border-indigo-500 text-indigo-600'
                 : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50',
               i === 0 ? 'rounded-l-md' : '',
-              i === products.links.length - 1 ? 'rounded-r-md' : '',
+              i === customers.links.length - 1 ? 'rounded-r-md' : '',
               !link.url ? ' bg-gray-100 text-gray-700': ''
             ]"
           v-html="link.label"
@@ -182,21 +183,24 @@
 import {computed, onMounted, ref} from "vue";
 import store from "../../store";
 import Spinner from "../../components/core/Spinner.vue";
-import {PRODUCTS_PER_PAGE} from "../../constants";
+import {CUSTOMERS_PER_PAGE} from "../../constants";
 import TableHeaderCell from "../../components/core/Table/TableHeaderCell.vue";
 import {Menu, MenuButton, MenuItem, MenuItems} from "@headlessui/vue";
 import {DotsVerticalIcon, PencilIcon, TrashIcon} from '@heroicons/vue/outline'
 
-const perPage = ref(PRODUCTS_PER_PAGE);
+const perPage = ref(CUSTOMERS_PER_PAGE);
 const search = ref('');
-const products = computed(() => store.state.products);
+const customers = computed(() => store.state.customers);
 const sortField = ref('updated_at');
 const sortDirection = ref('desc')
 
-const product = ref({})
+const customer = ref({})
+const showCustomerModal = ref(false);
+
+const emit = defineEmits(['clickEdit'])
 
 onMounted(() => {
-  getProducts();
+  getCustomers();
 })
 
 function getForPage(ev, link) {
@@ -205,11 +209,11 @@ function getForPage(ev, link) {
     return;
   }
 
-  getProducts(link.url)
+  getCustomers(link.url)
 }
 
-function getProducts(url = null) {
-  store.dispatch("getProducts", {
+function getCustomers(url = null) {
+  store.dispatch("getCustomers", {
     url,
     search: search.value,
     per_page: perPage.value,
@@ -218,7 +222,7 @@ function getProducts(url = null) {
   });
 }
 
-function sortProducts(field) {
+function sortCustomers(field) {
   if (field === sortField.value) {
     if (sortDirection.value === 'desc') {
       sortDirection.value = 'asc'
@@ -230,17 +234,21 @@ function sortProducts(field) {
     sortDirection.value = 'asc'
   }
 
-  getProducts()
+  getCustomers()
 }
 
-function deleteProduct(product) {
-  if (!confirm(`Are you sure you want to delete the product?`)) {
+function showAddNewModal() {
+  showCustomerModal.value = true
+}
+
+function deleteCustomer(customer) {
+  if (!confirm(`Are you sure you want to delete the customer?`)) {
     return
   }
-  store.dispatch('deleteProduct', product.id)
+  store.dispatch('deleteCustomer', customer)
     .then(res => {
-      store.commit('showToast', 'Product was successfully deleted');
-      store.dispatch('getProducts')
+      store.commit('showToast', 'Customer has been successfully deleted');
+      store.dispatch('getCustomers')
     })
 }
 
