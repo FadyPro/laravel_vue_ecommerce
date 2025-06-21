@@ -141,7 +141,7 @@ class ProductController extends Controller
 
         foreach ($images as $id => $image) {
             $directory = 'images';
-//            $path = 'images/' . Str::random();
+//            $directory = 'images/' . Str::random();
 //            if (!Storage::disk('public')->exists($directory)) {
 //                Storage::disk('public')->makeDirectory($directory, 0755, true);
 //            }
