@@ -2,7 +2,7 @@
   <div class="bg-white p-4 rounded-lg shadow animate-fade-in-down">
     <div class="flex justify-between border-b-2 pb-3">
       <div class="flex items-center">
-        <span class="ml-3">Found {{categories.data.length}} categories</span>
+<!--        <span class="ml-3">Found {{categories.data.length}} categories</span>-->
       </div>
     </div>
 
