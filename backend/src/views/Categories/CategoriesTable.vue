@@ -72,7 +72,7 @@
               <MenuButton
                 class="inline-flex items-center justify-center w-full justify-center rounded-full w-10 h-10 bg-black bg-opacity-0 text-sm font-medium text-white hover:bg-opacity-5 focus:bg-opacity-5 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
               >
-                <DotsVerticalIcon
+                <EllipsisVerticalIcon
                   class="h-5 w-5 text-indigo-500"
                   aria-hidden="true"/>
               </MenuButton>
@@ -139,7 +139,7 @@ import store from "../../store";
 import Spinner from "../../components/core/Spinner.vue";
 import TableHeaderCell from "../../components/core/Table/TableHeaderCell.vue";
 import {Menu, MenuButton, MenuItem, MenuItems} from "@headlessui/vue";
-import {DotsVerticalIcon, PencilIcon, TrashIcon} from '@heroicons/vue/outline'
+import { EllipsisVerticalIcon,PencilIcon, TrashIcon } from '@heroicons/vue/24/solid'
 import CategoryModal from "./CategoryModal.vue";
 
 const categories = computed(() => store.state.categories);

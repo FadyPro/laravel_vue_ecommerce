@@ -76,7 +76,7 @@
 <script setup>
 import {computed, onUpdated, ref} from 'vue'
 import {Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot} from '@headlessui/vue'
-import {ExclamationIcon} from '@heroicons/vue/outline'
+import { ExclamationCircleIcon,PencilIcon, TrashIcon } from '@heroicons/vue/24/solid'
 import CustomInput from "../../components/core/CustomInput.vue";
 import store from "../../store/index.js";
 import Spinner from "../../components/core/Spinner.vue";
@@ -91,7 +91,7 @@ const props = defineProps({
     type: Object,
   }
 })
-  
+
 const category = ref({
   id: props.category.id,
   name: props.category.name,

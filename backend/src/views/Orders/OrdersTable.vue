@@ -128,7 +128,7 @@ import Spinner from "../../components/core/Spinner.vue";
 import {PRODUCTS_PER_PAGE} from "../../constants";
 import TableHeaderCell from "../../components/core/Table/TableHeaderCell.vue";
 import {Menu, MenuButton, MenuItem, MenuItems} from "@headlessui/vue";
-import {DotsVerticalIcon, PencilIcon, TrashIcon} from '@heroicons/vue/outline'
+import { EllipsisVerticalIcon,PencilIcon, TrashIcon } from '@heroicons/vue/24/solid'
 import OrderStatus from "./OrderStatus.vue";
 
 const perPage = ref(PRODUCTS_PER_PAGE);
