@@ -41,7 +41,8 @@ class ProductController extends Controller
      * Store a newly created resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @return ProductResource
+     * @throws \Exception
      */
     public function store(ProductRequest $request)
     {
@@ -66,7 +67,7 @@ class ProductController extends Controller
      * Display the specified resource.
      *
      * @param \App\Models\Product $product
-     * @return \Illuminate\Http\Response
+     * @return ProductResource
      */
     public function show(Product $product)
     {
@@ -78,7 +79,7 @@ class ProductController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      * @param \App\Models\Product      $product
-     * @return \Illuminate\Http\Response
+     * @return ProductResource
      */
     public function update(ProductRequest $request, Product $product)
     {
