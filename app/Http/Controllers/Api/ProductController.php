@@ -99,13 +99,15 @@ class ProductController extends Controller
             $this->deleteImages($deletedImages, $product);
         }
         $product->update($data);
+
+        // Update positions of existing images
         $positions = $data['image_positions'] ?? [];
-        Log::debug('Request data:', [ 'positions' => $positions]);
         foreach ($positions as $id => $position) {
             ProductImage::query()
                 ->where('id', $id)
                 ->update(['position' => $position]);
         }
+
         return new ProductResource($product);
     }
 
@@ -147,14 +149,6 @@ class ProductController extends Controller
     private function saveImages($images, $positions, Product $product)
     {
 //        Log::debug('Request data:', ['images' => $images, 'positions' => $positions, 'product' => $product->id]);
-
-        if (empty($positions)) {
-            foreach ($positions as $id => $position) {
-                ProductImage::query()
-                    ->where('id', $id)
-                    ->update(['position' => $position]);
-            }
-        }
 
         foreach ($images as $id => $image) {
             $directory = 'images';
