@@ -14,6 +14,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Log;
 
 class ProductController extends Controller
 {
@@ -77,8 +78,9 @@ class ProductController extends Controller
      * Update the specified resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @param \App\Models\Product      $product
+     * @param \App\Models\Product $product
      * @return \Illuminate\Http\Response
+     * @throws \Exception
      */
     public function update(ProductRequest $request, Product $product)
     {
@@ -96,9 +98,14 @@ class ProductController extends Controller
         if (count($deletedImages) > 0) {
             $this->deleteImages($deletedImages, $product);
         }
-
         $product->update($data);
-
+        $positions = $data['image_positions'] ?? [];
+        Log::debug('Request data:', [ 'positions' => $positions]);
+        foreach ($positions as $id => $position) {
+            ProductImage::query()
+                ->where('id', $id)
+                ->update(['position' => $position]);
+        }
         return new ProductResource($product);
     }
 
@@ -139,10 +146,14 @@ class ProductController extends Controller
      */
     private function saveImages($images, $positions, Product $product)
     {
-        foreach ($positions as $id => $position) {
-            ProductImage::query()
-                ->where('id', $id)
-                ->update(['position' => $position]);
+//        Log::debug('Request data:', ['images' => $images, 'positions' => $positions, 'product' => $product->id]);
+
+        if (empty($positions)) {
+            foreach ($positions as $id => $position) {
+                ProductImage::query()
+                    ->where('id', $id)
+                    ->update(['position' => $position]);
+            }
         }
 
         foreach ($images as $id => $image) {

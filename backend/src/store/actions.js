@@ -215,3 +215,4 @@ export function updateCategory({commit}, category) {
 export function deleteCategory({commit}, category) {
   return axiosClient.delete(`/categories/${category.id}`)
 }
+
