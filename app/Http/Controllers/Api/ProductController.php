@@ -101,12 +101,15 @@ class ProductController extends Controller
         $product->update($data);
 
         // Update positions of existing images
-        $positions = $data['image_positions'] ?? [];
-        foreach ($positions as $id => $position) {
-            ProductImage::query()
-                ->where('id', $id)
-                ->update(['position' => $position]);
+        if ($deletedImages) {
+            foreach ($imagePositions as $id => $position) {
+                ProductImage::query()
+                    ->where('product_id', $product->id)
+                    ->where('id', $id)
+                    ->update(['position' => $position]);
+            }
         }
+
 
         return new ProductResource($product);
     }
@@ -183,7 +186,8 @@ class ProductController extends Controller
         foreach ($images as $image) {
             // If there is an old image, delete it
             if ($image->path) {
-                Storage::deleteDirectory('/public/' . dirname($image->path));
+                Storage::disk('public')->delete($image->path);
+//                Storage::deleteDirectory('/public/' . dirname($image->path));
             }
             $image->delete();
         }
