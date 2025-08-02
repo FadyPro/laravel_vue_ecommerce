@@ -18,7 +18,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->append(\Illuminate\Http\Middleware\HandleCors::class);
         // Register middleware aliases
         $middleware->alias([
-            'admin' => Admin::class,
+            'admin' => AdminMiddleware::class,
             'GuestOrVerified' => GuestOrVerified::class,
         ]);
     })
