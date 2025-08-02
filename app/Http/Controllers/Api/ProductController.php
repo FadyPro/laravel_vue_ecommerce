@@ -14,7 +14,6 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Log;
 
 class ProductController extends Controller
 {
@@ -78,9 +77,8 @@ class ProductController extends Controller
      * Update the specified resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @param \App\Models\Product $product
+     * @param \App\Models\Product      $product
      * @return \Illuminate\Http\Response
-     * @throws \Exception
      */
     public function update(ProductRequest $request, Product $product)
     {
@@ -98,18 +96,8 @@ class ProductController extends Controller
         if (count($deletedImages) > 0) {
             $this->deleteImages($deletedImages, $product);
         }
+
         $product->update($data);
-
-        // Update positions of existing images
-        if ($deletedImages) {
-            foreach ($imagePositions as $id => $position) {
-                ProductImage::query()
-                    ->where('product_id', $product->id)
-                    ->where('id', $id)
-                    ->update(['position' => $position]);
-            }
-        }
-
 
         return new ProductResource($product);
     }
@@ -129,13 +117,7 @@ class ProductController extends Controller
 
     private function saveCategories($categoryIds, Product $product)
     {
-        if (empty($categoryIds)) {
-            // If no categories are provided, delete all existing categories for the product
-            ProductCategory::where('product_id', $product->id)->delete();
-            return;
-        }
-
-//        ProductCategory::where('product_id', $product->id)->delete();
+        ProductCategory::where('product_id', $product->id)->delete();
         $data = array_map(fn($id) => (['category_id' => $id, 'product_id' => $product->id]), $categoryIds);
 
         ProductCategory::insert($data);
@@ -151,19 +133,22 @@ class ProductController extends Controller
      */
     private function saveImages($images, $positions, Product $product)
     {
-//        Log::debug('Request data:', ['images' => $images, 'positions' => $positions, 'product' => $product->id]);
+        foreach ($positions as $id => $position) {
+            ProductImage::query()
+                ->where('id', $id)
+                ->update(['position' => $position]);
+        }
 
         foreach ($images as $id => $image) {
-            $directory = 'images';
-//            $directory = 'images/' . Str::random();
-//            if (!Storage::disk('public')->exists($directory)) {
-//                Storage::disk('public')->makeDirectory($directory, 0755, true);
-//            }
-            $name = Str::random(40).'.'.$image->getClientOriginalExtension();
-            if (!Storage::disk('public')->putFileAS($directory, $image, $name)) {
+            $path = 'images/' . Str::random();
+            if (!Storage::exists($path)) {
+                Storage::makeDirectory($path, 0755, true);
+            }
+            $name = Str::random().'.'.$image->getClientOriginalExtension();
+            if (!Storage::putFileAS('public/' . $path, $image, $name)) {
                 throw new \Exception("Unable to save file \"{$image->getClientOriginalName()}\"");
             }
-            $relativePath = $directory . '/' . $name;
+            $relativePath = $path . '/' . $name;
 
             ProductImage::create([
                 'product_id' => $product->id,
@@ -186,8 +171,7 @@ class ProductController extends Controller
         foreach ($images as $image) {
             // If there is an old image, delete it
             if ($image->path) {
-                Storage::disk('public')->delete($image->path);
-//                Storage::deleteDirectory('/public/' . dirname($image->path));
+                Storage::deleteDirectory('/public/' . dirname($image->path));
             }
             $image->delete();
         }
